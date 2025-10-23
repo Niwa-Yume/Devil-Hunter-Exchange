@@ -1,0 +1,33 @@
+[
+  {
+    "id": "denji",
+    "name": "DENJI",
+    "price": 1000,
+    "image": "/images/denji.svg"
+  },
+  {
+    "id": "asa",
+    "name": "ASA MITAKA",
+    "price": 1000,
+    "image": "/images/asa.svg"
+  },
+  {
+    "id": "nayuta",
+    "name": "NAYUTA",
+    "price": 800,
+    "image": "/images/nayuta.svg"
+  },
+  {
+    "id": "power",
+    "name": "POWER",
+    "price": 0,
+    "image": "/images/power.svg",
+    "status": "💀 DELISTED"
+  },
+  {
+    "id": "barem",
+    "name": "BAREM",
+    "price": 450,
+    "image": "/images/barem.svg"
+  }
+]

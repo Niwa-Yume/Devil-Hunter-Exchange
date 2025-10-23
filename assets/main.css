@@ -1,0 +1,302 @@
+:root { color-scheme: dark; }
+html, body, #__nuxt { height: 100%; }
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img { display: block; max-width: 100%; height: auto; }
+* { border-radius: 0 !important; }
+
+/* Typo du système de design */
+:root {
+  --font-title: 'Special Elite', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  --font-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+h1, h2, h3, .heading {
+  font-family: var(--font-title) !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.mono { font-family: var(--font-mono) !important; }
+
+/* Typo alternative condensée pour headings */
+.heading-alt { font-family: 'Oswald', var(--font-title), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial !important; letter-spacing: .04em; text-transform: uppercase; }
+
+/* Brutalisme: pas d’ombre, juste des traits */
+.card-brutal { background: #000; color: #fff; }
+.card-brutal, .card-brutal * { box-shadow: none !important; }
+.ring-white-1 { box-shadow: inset 0 0 0 1px #fff; }
+
+/* Utilitaires de couleurs strictes */
+.text-invert { color: #fff; }
+.bg-ink { background: #000; }
+.border-invert { border-color: #fff; }
+
+/* ——— DA CHAINSaw MAN ——— */
+/* CRT scanlines overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.04) 0px,
+    rgba(255,255,255,0.04) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+  opacity: .25;
+  z-index: 10;
+}
+
+/* Film grain overlay (léger) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 3px 3px, 5px 5px;
+  background-position: 0 0, 2px 1px;
+  mix-blend-mode: overlay;
+  opacity: .35;
+  z-index: 9;
+}
+
+/* Glitch headline */
+.glitch {
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  text-shadow: -2px 0 #ff3d00; /* orange/rouge */
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 60%);
+  animation: glitch-slice 2.2s infinite linear alternate-reverse;
+}
+.glitch::after {
+  text-shadow: 2px 0 #e11d48; /* red-600 */
+  clip-path: polygon(0 60%, 100% 45%, 100% 100%, 0 100%);
+  animation-duration: 2.8s;
+}
+@keyframes glitch-slice {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-1px, 0); }
+  40% { transform: translate(1px, 0); }
+  60% { transform: translate(-2px, 0); }
+  80% { transform: translate(2px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Ticker horizontal brutaliste */
+.ticker {
+  white-space: nowrap;
+  overflow: hidden;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+.ticker__track {
+  display: inline-block;
+  padding-block: .35rem;
+  animation: ticker-move 18s linear infinite;
+}
+@keyframes ticker-move {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Badge « stamp » */
+.stamp {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: .2rem .5rem;
+  border: 2px solid #fff;
+  background: #000;
+  font-weight: 800;
+}
+
+/* Barres d’alerte / cut */
+.alert-stripes {
+  background:
+    repeating-linear-gradient(45deg,
+      #e11d48 0 10px,
+      #000 10px 20px);
+}
+.accent-stripes {
+  background:
+    repeating-linear-gradient(135deg,
+      #ff3d00 0 10px,
+      #000 10px 20px);
+}
+
+/* Bord rugueux (illusion) */
+.rough-border {
+  box-shadow:
+    inset 0 0 0 2px #fff,
+    inset 0 0 0 3px rgba(255,255,255,.08);
+}
+
+/* Cartes « no-chrome » */
+.card-brutal { background: #000; color: #fff; }
+.card-brutal, .card-brutal * { box-shadow: none !important; }
+
+/* Utilitaires typographiques */
+.heading { font-family: var(--font-title) !important; }
+.mono { font-family: var(--font-mono) !important; }
+.upper-kern { text-transform: uppercase; letter-spacing: .06em; }
+
+/* Boutons gros blocs */
+.btn-block {
+  border: 2px solid #fff;
+  box-shadow: none !important;
+}
+
+/* CTA buttons brutalistes */
+.btn-cta { border: 2px solid #fff; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; box-shadow: none !important; display: inline-flex; align-items: center; justify-content: center; }
+.btn-lg { padding: .55rem .9rem; min-height: 2.5rem; }
+/* largeur égale pour ACHAT / VENDRE */
+.btn-cta.btn-lg { width: 9.25rem; min-width: 9.25rem; }
+/* Responsive */
+.btn-cta { white-space: nowrap; }
+@media (max-width: 640px) {
+  .cta-group .btn-cta { width: 100% !important; min-width: 0 !important; }
+}
+
+/* Couleurs CHAINSaw Man pour ACHAT / VENDRE (override Nuxt UI) */
+.btn-cta.btn-buy { background: #ea580c !important; color: #000 !important; border-color: #fff !important; }
+.btn-cta.btn-buy:hover { background: #f97316 !important; }
+.btn-cta.btn-buy:active { background: #c2410c !important; }
+
+.btn-cta.btn-sell { background: #dc2626 !important; color: #fff !important; border-color: #fff !important; }
+.btn-cta.btn-sell:hover { background: #ef4444 !important; }
+.btn-cta.btn-sell:active { background: #b91c1c !important; }
+
+/* Overrides forts pour couleurs si Nuxt UI applique data-attrs */
+.btn-cta.btn-buy[data-variant="solid"][data-color="primary"],
+.btn-cta.btn-buy[data-variant="solid"][data-color="orange"] {
+  background: #ea580c !important; color: #000 !important; border-color: #fff !important;
+}
+.btn-cta.btn-sell[data-variant="solid"][data-color="primary"],
+.btn-cta.btn-sell[data-variant="solid"][data-color="red"] {
+  background: #dc2626 !important; color: #fff !important; border-color: #fff !important;
+}
+
+/* État disabled conservé */
+.btn-cta.btn-disabled, .btn-cta[data-disabled="true"] { background: #262626 !important; color: #fff !important; filter: grayscale(100%); cursor: not-allowed !important; opacity: 1 !important; }
+
+/* Teinte primaire Chainsaw Man pour les éléments qui utilisent text-primary */
+.text-primary { color: #ff3d00 !important; }
+
+/* Groupes d’actions responsives */
+.cta-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; align-items: stretch; }
+@media (max-width: 640px) { .cta-group { grid-template-columns: 1fr; } }
+
+/* Largeur identique robuste pour ACHAT/VENDRE (répartition 50/50) */
+.cta-group .btn-cta { flex: 1 1 0 !important; width: 100% !important; min-width: 0 !important; justify-content: center !important; align-items: center !important; }
+.cta-group .btn-cta .ui-icon, .cta-group .btn-cta svg { flex: 0 0 auto; }
+
+/* Hover card outline */
+.card-brutal:hover { outline: 2px solid #fff; outline-offset: -2px; }
+
+/* No wrap pour prix/cash */
+.no-wrap { white-space: nowrap; word-break: keep-all; }
+
+/* Overprint / surimpression texte */
+.overprint { position: relative; }
+.overprint::before {
+  content: attr(data-text);
+  position: absolute; left: 0; top: 0;
+  color: #ff3d00; /* orange industriel */
+  transform: translate(1px, 1px);
+  mix-blend-mode: multiply;
+  opacity: .6;
+  pointer-events: none;
+}
+
+/* Brush divider (coup de brosse) */
+.brush-divider {
+  height: 10px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.9) 40%, rgba(255,255,255,0.2) 60%) 0 0 / 50% 100% no-repeat,
+    radial-gradient(closest-side, rgba(255,255,255,0.9), transparent 70%) 20% 50% / 10% 120% no-repeat,
+    radial-gradient(closest-side, rgba(255,255,255,0.9), transparent 70%) 60% 50% / 8% 120% no-repeat;
+}
+
+/* Image style « poster » agressif */
+.posterish { filter: contrast(110%) saturate(115%); }
+.posterish:hover { filter: contrast(125%) saturate(130%) hue-rotate(6deg); }
+
+/* Forcer la couleur aussi sur les enfants internes du bouton (Nuxt UI) */
+.btn-cta.btn-buy, .btn-cta.btn-buy > *, .btn-cta.btn-buy [class*="bg-"] { background-color: #ea580c !important; color: #000 !important; }
+.btn-cta.btn-sell, .btn-cta.btn-sell > *, .btn-cta.btn-sell [class*="bg-"] { background-color: #dc2626 !important; color: #fff !important; }
+
+/* UButton (Nuxt UI) — overrides par variables CSS pour garantir les couleurs */
+.btn-cta { --ui-border: #fff; --ui-ring: transparent; }
+.btn-cta.btn-buy { --ui-bg: #ea580c !important; --ui-hover-bg: #f97316 !important; --ui-active-bg: #c2410c !important; --ui-text: #000 !important; }
+.btn-cta.btn-sell { --ui-bg: #dc2626 !important; --ui-hover-bg: #ef4444 !important; --ui-active-bg: #b91c1c !important; --ui-text: #fff !important; }
+
+/* Neutralise tout dégradé/overlay interne de Nuxt UI sur les boutons */
+.cta-group .btn-cta, .btn-cta, .btn-cta > *, .btn-cta [class*="bg-"] { background-image: none !important; }
+
+/* Effets d’impact Chainsaw Man (shake + éclaboussure) */
+.fx-root { position: relative; overflow-x: clip; }
+@keyframes fx-shake {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, 2px); }
+  80% { transform: translate(1px, -2px); }
+}
+.fx-buy, .fx-sell { animation: fx-shake 180ms ease-in-out 0s 2; }
+
+@keyframes fx-splash-fade {
+  from { opacity: .28; }
+  to { opacity: 0; }
+}
+.fx-root.fx-buy::after,
+.fx-root.fx-sell::after {
+  content: "";
+  position: fixed;
+  inset: 0; pointer-events: none;
+  z-index: 30;
+  background-repeat: no-repeat;
+  background-position: 20% 30%, 70% 60%, 45% 20%, 80% 25%, 25% 75%;
+  background-size: 14% 14%, 18% 18%, 10% 10%, 8% 8%, 12% 12%;
+  animation: fx-splash-fade 380ms ease-out forwards;
+  mix-blend-mode: screen;
+}
+.fx-root.fx-buy::after {
+  background-image:
+    radial-gradient(circle at center, rgba(255, 61, 0, .18) 0 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(255, 102, 0, .12) 0 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(255, 61, 0, .15) 0 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(255, 120, 64, .10) 0 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(255, 61, 0, .14) 0 55%, transparent 56%);
+}
+.fx-root.fx-sell::after {
+  background-image:
+    radial-gradient(circle at center, rgba(220, 38, 38, .20) 0 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(239, 68, 68, .14) 0 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(185, 28, 28, .16) 0 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(244, 63, 94, .12) 0 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(220, 38, 38, .14) 0 55%, transparent 56%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-buy, .fx-sell { animation: none !important; }
+  .fx-root.fx-buy::after, .fx-root.fx-sell::after { animation-duration: 0ms; opacity: .15; }
+}
