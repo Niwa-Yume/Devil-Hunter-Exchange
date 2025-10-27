@@ -6,7 +6,7 @@
     <!-- Header -->
     <header class="mb-6">
       <div class="flex items-start justify-between gap-6 flex-col lg:flex-row">
-        <div class="flex-1 w-full">
+        <div class="flex-1 w-full flex items-center justify-between">
           <h1 class="glitch heading text-5xl" :data-text="'Devil Hunter Exchange (DHX)'">
             <span class="sr-only">Devil Hunter Exchange (DHX)</span>
           </h1>
@@ -27,28 +27,39 @@
 
     </header>
 
+    <Dashboard></Dashboard>
 
 
     <h2 class="heading text-2xl mb-2">LE MARCHÉ</h2>
     <div class="h-2 accent-stripes mb-4"></div>
 
     <!-- Toolbar filtres/tri et résumé portefeuille -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-      <div class="flex items-center gap-4">
+    <div style="display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
         <label class="flex items-center gap-2 cursor-pointer select-none">
           <input type="checkbox" v-model="onlyAvailable" class="accent-orange-600" />
           <span class="upper-kern">Uniquement en vie</span>
         </label>
-        <UButton size="sm" color="primary" variant="solid" class="btn-block !text-black" @click="toggleSort">
-          <UIcon :name="sortAsc ? 'i-heroicons-arrow-up-20-solid' : 'i-heroicons-arrow-down-20-solid'" class="w-4 h-4 mr-1" /> PRIX
-        </UButton>
+        <button class="prix-button" @click="toggleSort">
+          <UIcon :name="sortAsc ? 'i-heroicons-arrow-up-20-solid' : 'i-heroicons-arrow-down-20-solid'" class="prix-icon" />
+          <span>PRIX</span>
+        </button>
       </div>
-      <ClientOnly>
-        <div class="mono no-wrap">
-          <span class="mr-3">x{{ totalOwned }} items</span>
-          <span>Valeur: {{ yen(totalValue) }}</span>
-        </div>
-      </ClientOnly>
+      <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+        <ClientOnly>
+          <div class="toolbar-summary">
+            <div class="summary-item">
+              <span class="summary-label">ITEMS</span>
+              <span class="summary-value">{{ totalOwned }}</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-item">
+              <span class="summary-label">VALEUR</span>
+              <span class="summary-value">{{ yen(totalValue) }}</span>
+            </div>
+          </div>
+        </ClientOnly>
+      </div>
     </div>
 
     <div class="cards-grid">
@@ -170,15 +181,13 @@ import { useLocalStorage } from '@vueuse/core'
 import { ref, watchEffect, computed, onMounted } from 'vue'
 import Sparkline from '../components/Sparkline.vue'
 import WalletCard from '../components/WalletCard.vue'
+import Dashboard from '../components/Dashboard.vue'
+import useCharacters from '../composables/useCharacters'
 
 interface Character { id: string; name: string; price: number; image: string; status?: string }
 
-// Fetch côté client uniquement pour éviter tout blocage SSR
-const { data, error } = await useFetch('/data.json', {
-  server: false,
-  lazy: true,
-  default: () => []
-})
+// Fetch côté client via composable partagé
+const { data, error, list, listEnriched } = useCharacters()
 
 if (error.value) {
   console.error('ERREUR: Impossible de charger /data.json', error.value)
@@ -187,7 +196,7 @@ if (error.value) {
 // Liste sûre (jamais null) et typée souple pour le template
 const charactersList = ref<any[]>([])
 watchEffect(() => {
-  charactersList.value = Array.isArray(data.value) ? (data.value as any[]) : []
+  charactersList.value = Array.isArray(listEnriched.value) ? (listEnriched.value as any[]) : []
 })
 // Liste pour le template sans inférence stricte
 const listAny = computed<any[]>(() => charactersList.value)
@@ -450,6 +459,108 @@ onMounted(() => { isHydrated.value = true })
 <style scoped>
 .fade-enter-active, .fade-leave-active { transition: opacity .2s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* Bouton PRIX - Design Chainsaw Man */
+.prix-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #0a0a0a;
+  border: 2px solid #fff;
+  color: #fff;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.prix-button:hover {
+  background: #1a1a1a;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3), 0 0 12px rgba(255,61,0,0.2);
+}
+
+.prix-button:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5), 0 0 8px rgba(255,61,0,0.15);
+}
+
+.prix-button:focus-visible {
+  outline: 2px dashed #fff;
+  outline-offset: 2px;
+}
+
+.prix-icon {
+  width: 16px;
+  height: 16px;
+  color: #ff3d00;
+  transition: transform 0.3s ease;
+}
+
+.prix-button:hover .prix-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 4px rgba(255,61,0,0.4));
+}
+
+/* Toolbar Summary - Design Chainsaw Man */
+.toolbar-summary {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 8px 12px;
+  background: #0a0a0a;
+  border: 2px solid #fff;
+  color: #fff;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
+}
+
+.toolbar-summary:hover {
+  background: #1a1a1a;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3), 0 0 12px rgba(255,61,0,0.2);
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 12px;
+  min-width: 0;
+}
+
+.summary-label {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  opacity: 0.8;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.summary-value {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: #ff3d00;
+  text-shadow: 0 0 8px rgba(255,61,0,0.4);
+}
+
+.summary-divider {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, transparent, #fff, transparent);
+  opacity: 0.5;
+  margin: 0 4px;
+}
 
 /* Grille cartes: 1 col mobile, 2 en md, 3 colonnes fixes de 280px en lg */
 .cards-grid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; justify-items: stretch; align-items: start; }
