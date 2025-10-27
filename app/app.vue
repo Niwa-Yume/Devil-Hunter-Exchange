@@ -1,207 +1,173 @@
 <template>
-  <UContainer class="bg-black text-white min-h-screen py-8">
-   <!-- Alert bar -->
-   <div class="h-2 alert-stripes mb-4"></div>
+  <div class="bg-black text-white min-h-screen py-8 px-4 sm:px-4 lg:px-0 w-full max-w-[928px] mx-auto">
+    <!-- Alert bar -->
+    <div class="h-2 alert-stripes mb-4"></div>
 
-   <!-- Header -->
-   <header class="mb-6">
-     <div class="flex items-start justify-between gap-6 flex-col lg:flex-row">
-       <div class="flex-1 w-full">
-         <h1 class="glitch heading text-5xl" :data-text="'Devil Hunter Exchange (DHX)'"><span class="sr-only">Devil Hunter Exchange (DHX)</span>Devil Hunter Exchange (DHX)</h1>
-         <!-- Ticker sous le titre en mobile -->
-         <div class="ticker mt-4 lg:hidden">
-           <div class="ticker__track">
-             <span class="mx-6 upper-kern">BLOOD WARNING</span>
-             <span class="mx-6">—</span>
-             <span class="mx-6 upper-kern">MARKET IS CHAOTIC</span>
-             <span class="mx-6">—</span>
-             <span class="mx-6 upper-kern">NO MERCY TRADES</span>
-             <span class="mx-6">—</span>
-             <span class="mx-6 upper-kern">CHAINSAW MAN UNIVERSE</span>
-             <span class="mx-6">—</span>
-             <span class="mx-6 upper-kern">BLOOD WARNING</span>
-             <span class="mx-6">—</span>
-             <span class="mx-6 upper-kern">MARKET IS CHAOTIC</span>
-             <span class="mx-6">—</span>
-             <span class="mx-6 upper-kern">NO MERCY TRADES</span>
-             <span class="mx-6">—</span>
-             <span class="mx-6 upper-kern">CHAINSAW MAN UNIVERSE</span>
-             <span class="mx-6">—</span>
-           </div>
-         </div>
-       </div>
-       <!-- Carte Portefeuille (style Devil Hunter ID) -->
-       <div class="mb-6">
-         <WalletCard
-             :username="userName"
-             :userImage="userImage"
-             :portfolioValue="totalValue"
-             :cashAmount="cash"
-             :performancePercentage="performancePct"
-             :performanceTrend="performanceTrend"
-         />
-       </div>
-     </div>
+    <!-- Header -->
+    <header class="mb-6">
+      <div class="flex items-start justify-between gap-6 flex-col lg:flex-row">
+        <div class="flex-1 w-full">
+          <h1 class="glitch heading text-5xl" :data-text="'Devil Hunter Exchange (DHX)'">
+            <span class="sr-only">Devil Hunter Exchange (DHX)</span>
+          </h1>
+        </div>
+        <!-- Carte Portefeuille (style Devil Hunter ID) -->
+        <div class="w-full lg:w-auto">
+          <WalletCard
+            :username="userName"
+            :userImage="userImage"
+            :portfolioValue="totalValue"
+            :cashAmount="cash"
+            :performancePercentage="performancePct"
+            :performanceTrend="performanceTrend"
+            @reset="resetWallet"
+          />
+        </div>
+      </div>
 
-     <!-- Ticker en desktop sous le header -->
-     <div class="ticker mt-4 hidden lg:block">
-       <div class="ticker__track">
-         <span class="mx-6 upper-kern">BLOOD WARNING</span>
-         <span class="mx-6">—</span>
-         <span class="mx-6 upper-kern">MARKET IS CHAOTIC</span>
-         <span class="mx-6">—</span>
-         <span class="mx-6 upper-kern">NO MERCY TRADES</span>
-         <span class="mx-6">—</span>
-         <span class="mx-6 upper-kern">CHAINSAW MAN UNIVERSE</span>
-         <span class="mx-6">—</span>
-         <span class="mx-6 upper-kern">BLOOD WARNING</span>
-         <span class="mx-6">—</span>
-         <span class="mx-6 upper-kern">MARKET IS CHAOTIC</span>
-         <span class="mx-6">—</span>
-         <span class="mx-6 upper-kern">NO MERCY TRADES</span>
-         <span class="mx-6">—</span>
-         <span class="mx-6 upper-kern">CHAINSAW MAN UNIVERSE</span>
-         <span class="mx-6">—</span>
-       </div>
-     </div>
-   </header>
+    </header>
 
 
 
-   <h2 class="heading text-2xl mb-2">LE MARCHÉ</h2>
-   <div class="h-2 accent-stripes mb-4"></div>
+    <h2 class="heading text-2xl mb-2">LE MARCHÉ</h2>
+    <div class="h-2 accent-stripes mb-4"></div>
 
-   <!-- Toolbar filtres/tri et résumé portefeuille -->
-   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-     <div class="flex items-center gap-4">
-       <label class="flex items-center gap-2 cursor-pointer select-none">
-         <input type="checkbox" v-model="onlyAvailable" class="accent-orange-600" />
-         <span class="upper-kern">DISPO SEULEMENT</span>
-       </label>
-       <UButton size="sm" color="primary" variant="solid" class="btn-block !text-black" @click="toggleSort">
-         <UIcon :name="sortAsc ? 'i-heroicons-arrow-up-20-solid' : 'i-heroicons-arrow-down-20-solid'" class="w-4 h-4 mr-1" /> PRIX
-       </UButton>
-     </div>
-     <ClientOnly>
-       <div class="mono no-wrap">
-         <span class="mr-3">x{{ totalOwned }} items</span>
-         <span>Valeur: {{ yen(totalValue) }}</span>
-       </div>
-     </ClientOnly>
-   </div>
+    <!-- Toolbar filtres/tri et résumé portefeuille -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+      <div class="flex items-center gap-4">
+        <label class="flex items-center gap-2 cursor-pointer select-none">
+          <input type="checkbox" v-model="onlyAvailable" class="accent-orange-600" />
+          <span class="upper-kern">Uniquement en vie</span>
+        </label>
+        <UButton size="sm" color="primary" variant="solid" class="btn-block !text-black" @click="toggleSort">
+          <UIcon :name="sortAsc ? 'i-heroicons-arrow-up-20-solid' : 'i-heroicons-arrow-down-20-solid'" class="w-4 h-4 mr-1" /> PRIX
+        </UButton>
+      </div>
+      <ClientOnly>
+        <div class="mono no-wrap">
+          <span class="mr-3">x{{ totalOwned }} items</span>
+          <span>Valeur: {{ yen(totalValue) }}</span>
+        </div>
+      </ClientOnly>
+    </div>
 
-   <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-     <UCard
-      v-for="(char, idx) in filteredList"
-       :key="char?.id ?? idx"
-       class="card-brutal rough-border ring-1 ring-white rounded-none shadow-none"
-       :ui="{ header: 'py-3', body: 'p-0', footer: 'py-3' }"
-     >
-       <template #header>
-         <div class="flex items-center justify-between w-full">
-           <h3 class="heading text-lg overprint" :data-text="char.name">{{ char.name }}</h3>
-           <div class="flex items-center gap-2">
-             <ClientOnly>
-               <span v-if="owned(char.id) > 0" class="mono text-xs px-2 py-0.5 border border-white bg-black">x{{ owned(char.id) }}</span>
-             </ClientOnly>
-             <UIcon v-if="char.status && char.status.includes('DELISTED')" name="i-heroicons-no-symbol-20-solid" class="text-red-600 w-5 h-5" />
-           </div>
-         </div>
-       </template>
+    <div class="cards-grid">
+      <UCard
+        v-for="(char, idx) in filteredList"
+        :key="char?.id ?? idx"
+        class="card-brutal rough-border ring-1 ring-white rounded-none shadow-none overflow-hidden !p-0"
+      >
+        <template #header>
+          <div class="flex items-center justify-center w-full gap-1 py-1 px-2 text-center">
+            <h3 class="heading text-sm overprint truncate whitespace-nowrap max-w-[70%]" :data-text="char.name">{{ char.name }}</h3>
+            <div class="flex items-center gap-1">
+              <ClientOnly>
+                <span v-if="owned(char.id) > 0" class="mono text-[10px] px-1 py-0.5 border-2 border-white bg-black font-bold">x{{ owned(char.id) }}</span>
+              </ClientOnly>
+              <UIcon v-if="char.status && char.status.includes('DELISTED')" name="i-heroicons-no-symbol-20-solid" class="text-red-600 w-4 h-4" />
+            </div>
+          </div>
+        </template>
 
-       <img :src="char.image" :alt="char.name" class="w-full h-48 object-cover posterish" />
+        <!-- Centre l'image de façon fiable -->
+        <div class="relative w-full min-h-32 flex items-center justify-center text-center px-0">
+          <img :src="char.image" :alt="char.name" class="max-h-28 text-center items-center w-auto h-auto max-w-full object-contain posterish block mx-auto self-center justify-self-center" />
+          <div v-if="char.status" class="absolute top-1 left-1 stamp text-red-600 bg-black/80 px-1 py-0.5 border border-red-600 text-[10px]">{{ char.status }}</div>
+        </div>
 
-       <!-- Mini sparkline par carte -->
-       <div class="px-3 py-2 bg-black border-t border-white">
-         <Sparkline :values="sparkFor(char.id, char.price)" :width="240" :height="40" stroke="#ff3d00" :stroke-width="2" :gradient="['#ff3d00', '#ff3d00']" :uid="`card-${char.id}`" />
-       </div>
+        <!-- Mini sparkline par carte -->
+        <div class="px-2 py-1 bg-black border-t border-white flex justify-center">
+          <Sparkline class="w-full max-w-full" :values="sparkFor(char.id, char.price)" :width="240" :height="24" stroke="#ff3d00" :stroke-width="2" :gradient="['#ff3d00', '#ff3d00']" :uid="`card-${char.id}`" />
+        </div>
 
-       <template #footer>
-         <div class="flex items-center justify-between w-full">
-           <div>
-             <p class="mono text-3xl font-extrabold tracking-wide inline-block bg-black text-white border border-white px-2 py-1 leading-none no-wrap">{{ yen(char.price) }}</p>
-             <p v-if="char.status" class="stamp text-red-600 mt-2">{{ char.status }}</p>
-           </div>
-           <div class="cta-group">
-             <UButton
-               :disabled="!isHydrated || !canBuy(char)"
-               :title="!canBuy(char) ? buyReason(char) : undefined"
-               color="warning"
-               variant="solid"
-               class="btn-cta btn-lg btn-buy data-[disabled=true]:btn-disabled w-full justify-center items-center !bg-[#ea580c] !text-black !border-white"
-               @click="buy(char)"
-             >
-               <UIcon name="i-heroicons-arrow-up-right-16-solid" class="w-4 h-4 mr-1" /> ACHAT
-             </UButton>
-             <UButton
-               :disabled="!isHydrated || !canSell(char)"
-               :title="!canSell(char) ? 'Rien à vendre' : 'VENDRE'"
-               color="error"
-               variant="solid"
-               class="btn-cta btn-lg btn-sell data-[disabled=true]:btn-disabled w-full justify-center items-center !bg-[#dc2626] !text-white !border-white"
-               @click="sell(char)"
-             >
-               <UIcon name="i-heroicons-arrow-down-16-solid" class="w-4 h-4 mr-1" /> VENDRE
-             </UButton>
-           </div>
-         </div>
-       </template>
-     </UCard>
-   </div>
+        <template #footer>
+          <div class="space-y-1.5 p-2">
+            <!-- Prix -->
+            <div class="flex items-center justify-center">
+              <p class="mono text-lg font-extrabold tracking-wide bg-black text-white border-2 border-white px-2 py-0.5 leading-none">{{ yen(char.price) }}</p>
+            </div>
 
-   <!-- Slide-over Portefeuille -->
-   <transition name="fade">
-     <div v-if="showWallet" class="fixed inset-0 z-50">
-       <!-- Backdrop -->
-       <div class="absolute inset-0 bg-black/70" @click="showWallet = false"></div>
-       <!-- Panel -->
-       <div class="absolute right-0 top-0 h-full w-full sm:w-[420px] bg-black text-white rough-border ring-1 ring-white flex flex-col">
-         <div class="p-4 border-b border-white flex items-center justify-between">
-           <h3 class="heading text-xl upper-kern">PORTFEUILLE</h3>
-           <UButton color="primary" variant="solid" class="btn-block !text-black" @click="showWallet = false">
-             FERMER
-           </UButton>
-         </div>
-         <div class="p-4 mono border-b border-white flex items-center justify-between">
-           <div>
-             <div class="upper-kern text-sm opacity-80">CASH</div>
-             <div class="text-2xl font-extrabold">{{ yen(cash) }}</div>
-           </div>
-           <div class="text-right">
-             <div class="upper-kern text-sm opacity-80">VALEUR</div>
-             <div class="text-2xl font-extrabold">{{ yen(totalValue) }}</div>
-           </div>
-         </div>
-         <div class="flex-1 overflow-y-auto">
-           <div v-if="holdings.length === 0" class="p-6 text-center opacity-70 upper-kern">Aucun item détenu</div>
+            <!-- Boutons d'action -->
+            <div class="grid grid-cols-2 gap-1 place-items-center">
+              <UButton
+                :disabled="!isHydrated || !canBuy(char)"
+                :title="!canBuy(char) ? buyReason(char) : undefined"
+                color="warning"
+                variant="solid"
+                size="sm"
+                class="btn-cta btn-buy data-[disabled=true]:btn-disabled w-full justify-center !bg-[#ea580c] !text-black !border-2 !border-white font-bold !py-1"
+                @click="buy(char)"
+              >
+                <UIcon name="i-heroicons-arrow-up-right-16-solid" class="w-4 h-4 mr-1" /> ACHETER
+              </UButton>
+              <UButton
+                :disabled="!isHydrated || !canSell(char)"
+                :title="!canSell(char) ? 'Rien à vendre' : 'VENDRE'"
+                color="error"
+                variant="solid"
+                size="sm"
+                class="btn-cta btn-sell data-[disabled=true]:btn-disabled w-full justify-center !bg-[#dc2626] !text-white !border-2 !border-white font-bold !py-1"
+                @click="sell(char)"
+              >
+                <UIcon name="i-heroicons-arrow-down-16-solid" class="w-4 h-4 mr-1" /> VENDRE
+              </UButton>
+            </div>
+          </div>
+        </template>
+      </UCard>
+    </div>
 
-           <div v-for="it in holdings" :key="it.id" class="p-4 border-b border-white">
-             <div class="flex items-center gap-3">
-               <img :src="it.image" :alt="it.name" class="w-12 h-12 object-cover posterish" />
-               <div class="flex-1">
-                 <div class="flex items-center justify-between">
-                   <span class="heading text-base overprint" :data-text="it.name">{{ it.name }}</span>
-                   <span class="mono">x{{ it.qty }}</span>
-                 </div>
-                 <div class="text-sm mono opacity-80">{{ yen(it.price) }} • total {{ yen(it.total) }}</div>
-               </div>
-             </div>
-             <div class="mt-2">
-               <Sparkline :values="sparkFor(it.id, it.price)" :width="360" :height="40" stroke="#ff3d00" :stroke-width="2" :gradient="['#ff3d00', '#ff3d00']" :uid="`wallet-${it.id}`" />
-             </div>
-           </div>
-         </div>
-       </div>
-     </div>
-   </transition>
-  </UContainer>
+    <!-- Slide-over Portefeuille -->
+    <transition name="fade">
+      <div v-if="showWallet" class="fixed inset-0 z-50">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/70" @click="showWallet = false"></div>
+        <!-- Panel -->
+        <div class="absolute right-0 top-0 h-full w-full sm:w-[420px] bg-black text-white rough-border ring-1 ring-white flex flex-col">
+          <div class="p-4 border-b border-white flex items-center justify-between">
+            <h3 class="heading text-xl upper-kern">PORTFEUILLE</h3>
+            <UButton color="primary" variant="solid" class="btn-block !text-black" @click="showWallet = false">
+              FERMER
+            </UButton>
+          </div>
+          <div class="p-4 mono border-b border-white flex items-center justify-between">
+            <div>
+              <div class="upper-kern text-sm opacity-80">CASH</div>
+              <div class="text-2xl font-extrabold">{{ yen(cash) }}</div>
+            </div>
+            <div class="text-right">
+              <div class="upper-kern text-sm opacity-80">VALEUR</div>
+              <div class="text-2xl font-extrabold">{{ yen(totalValue) }}</div>
+            </div>
+          </div>
+          <div class="flex-1 overflow-y-auto">
+            <div v-if="holdings.length === 0" class="p-6 text-center opacity-70 upper-kern">Aucun item détenu</div>
+
+            <div v-for="it in holdings" :key="it.id" class="p-4 border-b border-white">
+              <div class="flex items-center gap-3">
+                <img :src="it.image" :alt="it.name" class="w-12 h-12 object-cover posterish" />
+                <div class="flex-1">
+                  <div class="flex items-center justify-between">
+                    <span class="heading text-base overprint" :data-text="it.name">{{ it.name }}</span>
+                    <span class="mono">x{{ it.qty }}</span>
+                  </div>
+                  <div class="text-sm mono opacity-80">{{ yen(it.price) }} • total {{ yen(it.total) }}</div>
+                </div>
+              </div>
+              <div class="mt-2">
+                <Sparkline :values="sparkFor(it.id, it.price)" :width="360" :height="40" stroke="#ff3d00" :stroke-width="2" :gradient="['#ff3d00', '#ff3d00']" :uid="`wallet-${it.id}`" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { useLocalStorage } from '@vueuse/core'
 import { ref, watchEffect, computed, onMounted } from 'vue'
-// Force l’enregistrement côté template
-import CashChart from '../components/CashChart.vue'
 import Sparkline from '../components/Sparkline.vue'
 import WalletCard from '../components/WalletCard.vue'
 
@@ -284,7 +250,7 @@ const fxEnabled = useLocalStorage<boolean>('dhx-fx-enabled', true)
 
 function triggerFx(kind: 'buy' | 'sell') {
   if (!fxEnabled.value) return
-  if (typeof document === 'undefined') return
+  if (typeof document === 'undefined' ) return
   const el = document.body
   if (!el) return
   const cls = kind === 'buy' ? 'fx-buy' : 'fx-sell'
@@ -312,8 +278,17 @@ function buy(char: Character) {
 function resetWallet() {
   cash.value = 10000
   wallet.value = {}
-  // reset de l’historique
+  // reset de l'historique
   cashHistory.value = [cash.value]
+
+  toast.add({
+    title: 'PORTEFEUILLE RÉINITIALISÉ',
+    description: 'Retour à 10,000¥ de capital initial',
+    icon: 'i-heroicons-arrow-path-20-solid',
+    color: 'error'
+  })
+
+  triggerFx('sell')
 }
 
 function formatYen(v: number) {
@@ -347,12 +322,11 @@ const filteredList = computed<any[]>(() => {
   if (onlyAvailable.value) {
     list = list.filter(item => isAliveStatus(item?.status))
   }
-  const arr = list.slice().sort((a: any, b: any) => {
+  return list.slice().sort((a: any, b: any) => {
     const ap = Number(a?.price ?? 0)
     const bp = Number(b?.price ?? 0)
     return sortAsc.value ? ap - bp : bp - ap
   })
-  return arr
 })
 
 function toggleSort() { sortAsc.value = !sortAsc.value }
@@ -476,4 +450,89 @@ onMounted(() => { isHydrated.value = true })
 <style scoped>
 .fade-enter-active, .fade-leave-active { transition: opacity .2s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* Grille cartes: 1 col mobile, 2 en md, 3 colonnes fixes de 280px en lg */
+.cards-grid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; justify-items: stretch; align-items: start; }
+.cards-grid > * { min-width: 0; width: 100%; min-height: 250px; }
+@media (min-width: 768px) { /* md */
+  .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) { /* lg */
+  .cards-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Amélioration des cartes */
+:deep(.card-brutal) {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto; /* plus de max-height fixe */
+  text-align: center;
+}
+
+:deep(.card-brutal:hover) {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 0 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Boutons CTA améliorés */
+:deep(.btn-cta) {
+  font-family: var(--font-title, ui-sans-serif, sans-serif);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+:deep(.btn-cta:not([disabled]):hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.8);
+}
+
+:deep(.btn-cta:not([disabled]):active) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Image avec effet hover */
+:deep(.posterish) {
+  filter: grayscale(0.2) contrast(1.1);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+:deep(.card-brutal:hover .posterish) {
+  filter: grayscale(0) contrast(1.15);
+  transform: scale(1.02);
+}
+
+/* Status badge */
+:deep(.stamp) {
+  font-family: var(--font-title, ui-sans-serif, sans-serif);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: bold;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Amélioration du heading */
+:deep(.overprint) {
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+}
+
+/* Centrage fiable de l'image et suppression du display:flex problématique */
+:deep(.card-brutal img.posterish) {
+  max-height: 22rem !important;
+  height: auto !important;
+  width: auto !important;
+  object-fit: contain !important;
+  display: block; /* au lieu de flex, qui peut casser le centrage */
+  margin: auto; /* centre horizontalement dans la zone disponible */
+}
 </style>

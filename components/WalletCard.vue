@@ -42,29 +42,35 @@
         <!-- Col Valeurs (tableau lisible) -->
         <div class="grid grid-cols-1 gap-3">
           <div class="grid grid-cols-[140px_1fr] items-baseline gap-3">
-            <div class="mono text-[11px] tracking-wide text-black/80">PORTFOLIO VALUE</div>
-            <div class="mono text-3xl font-extrabold leading-none" :class="portfolioColorClass">{{ yen(portfolioValue) }}</div>
+            <div class="mono text-[11px] tracking-wide text-black/60 font-bold uppercase">PORTFOLIO VALUE</div>
+            <ClientOnly fallback="...">
+              <div class="mono text-3xl font-black leading-none" :class="portfolioColorClass">{{ yen(portfolioValue) }}</div>
+            </ClientOnly>
           </div>
           <div class="grid grid-cols-[140px_1fr] items-baseline gap-3">
-            <div class="mono text-[11px] tracking-wide text-black/80">CASH AVAILABLE</div>
-            <div class="mono text-3xl font-extrabold leading-none">{{ yen(cashAmount) }}</div>
+            <div class="mono text-[11px] tracking-wide text-black/60 font-bold uppercase">CASH AVAILABLE</div>
+            <ClientOnly fallback="...">
+              <div class="mono text-3xl font-black leading-none text-black">{{ yen(cashAmount) }}</div>
+            </ClientOnly>
           </div>
           <div class="divider"></div>
           <div class="grid grid-cols-[140px_1fr] items-baseline gap-3">
-            <div class="mono text-[11px] tracking-wide text-black/80">CARD CODE</div>
-            <div class="mono text-base">{{ sidebarCode }}</div>
+            <div class="mono text-[11px] tracking-wide text-black/60 font-bold uppercase">CARD CODE</div>
+            <div class="mono text-base font-bold text-black">{{ sidebarCode }}</div>
           </div>
         </div>
 
         <!-- Col Performance (net, lisible) -->
         <div class="flex items-center lg:items-start justify-between lg:justify-end gap-4">
           <div class="text-right">
-            <div class="mono text-[11px] tracking-wide text-black/80">PERFORMANCE</div>
-            <div class="flex items-center justify-end gap-2">
-              <UIcon :name="trendIcon" :class="['w-6 h-6', trendColorClass]" />
-              <div class="mono text-3xl font-extrabold" :class="trendColorClass">{{ signedPercent }}</div>
-            </div>
-            <div class="mono text-[11px] text-black/70">Performance / All Time</div>
+            <div class="mono text-[11px] tracking-wide text-black/60 font-bold uppercase">PERFORMANCE</div>
+            <ClientOnly fallback="...">
+              <div class="flex items-center justify-end gap-2">
+                <UIcon :name="trendIcon" :class="['w-6 h-6', trendColorClass]" />
+                <div class="mono text-3xl font-black" :class="trendColorClass">{{ signedPercent }}</div>
+              </div>
+            </ClientOnly>
+            <div class="mono text-[11px] text-black/50">Performance / All Time</div>
           </div>
         </div>
       </div>
@@ -72,15 +78,19 @@
       <div class="divider my-4"></div>
 
       <!-- Bas de carte: infos et bouton reset -->
-      <div class="flex items-end justify-between gap-3">
-        <div class="mono text-[11px] text-black/80">政府公安局 • PUBLIC SAFETY</div>
-        <div class="mono text-[11px] text-black/80 text-right hidden sm:block">
+      <div class="flex items-end justify-between gap-3 flex-wrap">
+        <div class="mono text-[11px] text-black/60 font-bold">政府公安局 • PUBLIC SAFETY</div>
+        <div class="mono text-[11px] text-black/60 text-right hidden sm:block">
           <div>ISSUED: {{ issuedDate }}</div>
-          <div class="mt-1">SIGNATURE: <span class="inline-block align-bottom border-b border-black min-w-[120px]"></span></div>
+          <div class="mt-1">SIGNATURE: <span class="inline-block align-bottom border-b border-black/40 min-w-[120px]"></span></div>
         </div>
-        <UButton color="error" variant="solid" class="btn-block !text-white !bg-[#dc2626] !border-black" @click="onReset">
+        <button
+          class="btn-reset"
+          @click="onReset"
+        >
+          <UIcon name="i-heroicons-arrow-path-20-solid" class="w-4 h-4 mr-1" />
           RESET PORTFOLIO
-        </UButton>
+        </button>
       </div>
     </div>
 
@@ -148,8 +158,14 @@ const issuedDate = computed(() => {
   } catch { return '' }
 })
 
+const emit = defineEmits<{
+  reset: []
+}>()
+
 function onReset() {
-  alert('Portefeuille réinitialisé (pas encore fonctionnel)!')
+  if (confirm('⚠️ ATTENTION: Voulez-vous vraiment réinitialiser votre portefeuille ? Toutes vos données seront perdues !')) {
+    emit('reset')
+  }
 }
 </script>
 
@@ -170,4 +186,35 @@ function onReset() {
 .upper-kern { letter-spacing: .08em; text-transform: uppercase; }
 .overprint { text-shadow: 1px 0 currentColor; }
 .stamp { font-family: 'Special Elite', system-ui, -apple-system, sans-serif; letter-spacing: .08em; }
+
+/* Bouton RESET rouge vif */
+.btn-reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  background-color: #dc2626 !important;
+  color: white !important;
+  border: 2px solid #000 !important;
+  font-family: 'Special Elite', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+}
+
+.btn-reset:hover {
+  background-color: #b91c1c !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.btn-reset:active {
+  transform: translateY(0);
+  box-shadow: none !important;
+}
 </style>

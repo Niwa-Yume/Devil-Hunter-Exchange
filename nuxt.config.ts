@@ -1,3 +1,6 @@
+import { fileURLToPath } from 'node:url'
+import tsconfigPaths from 'vite-tsconfig-paths'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
@@ -7,8 +10,7 @@ export default defineNuxtConfig({
     '@nuxt/icon'
   ],
   css: [
-    '~/assets/tailwind.css',
-    '~/assets/main.css'
+    fileURLToPath(new URL('./assets/main.css', import.meta.url))
   ],
   fonts: {
     // Charge les polices via @nuxt/fonts (Google Fonts)
@@ -17,6 +19,17 @@ export default defineNuxtConfig({
       { name: 'Roboto Mono', provider: 'google' },
       { name: 'Oswald', provider: 'google' }
     ]
+  },
+  vite: {
+    plugins: [tsconfigPaths()],
+    optimizeDeps: {
+      esbuildOptions: {
+        target: 'esnext'
+      }
+    },
+    esbuild: {
+      target: 'esnext'
+    }
   },
   nitro: {
     routeRules: process.env.NODE_ENV === 'production'

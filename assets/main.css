@@ -124,7 +124,6 @@ body::after {
   text-transform: uppercase;
   letter-spacing: .08em;
   padding: .2rem .5rem;
-  border: 2px solid #fff;
   background: #000;
   font-weight: 800;
 }
@@ -151,8 +150,35 @@ body::after {
 }
 
 /* Cartes « no-chrome » */
-.card-brutal { background: #000; color: #fff; }
+.card-brutal {
+  background: #000;
+  color: #fff;
+}
 .card-brutal, .card-brutal * { box-shadow: none !important; }
+
+/* Utiliser @layer pour avoir la plus haute priorité possible */
+@layer components {
+  /* Enlever TOUS les paddings des wrappers internes de UCard */
+  .card-brutal > * {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .card-brutal > * > * {
+    padding: 0 !important;
+  }
+
+  .card-brutal > * > * > * {
+    padding: 0 !important;
+  }
+}
+
+/* Force une largeur normale sur la grille */
+.grid {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 
 /* Utilitaires typographiques */
 .heading { font-family: var(--font-title) !important; }
@@ -168,8 +194,7 @@ body::after {
 /* CTA buttons brutalistes */
 .btn-cta { border: 2px solid #fff; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; box-shadow: none !important; display: inline-flex; align-items: center; justify-content: center; }
 .btn-lg { padding: .55rem .9rem; min-height: 2.5rem; }
-/* largeur égale pour ACHAT / VENDRE */
-.btn-cta.btn-lg { width: 9.25rem; min-width: 9.25rem; }
+
 /* Responsive */
 .btn-cta { white-space: nowrap; }
 @media (max-width: 640px) {
@@ -281,19 +306,19 @@ body::after {
 }
 .fx-root.fx-buy::after {
   background-image:
-    radial-gradient(circle at center, rgba(255, 61, 0, .18) 0 55%, transparent 56%),
-    radial-gradient(circle at center, rgba(255, 102, 0, .12) 0 55%, transparent 56%),
-    radial-gradient(circle at center, rgba(255, 61, 0, .15) 0 55%, transparent 56%),
-    radial-gradient(circle at center, rgba(255, 120, 64, .10) 0 55%, transparent 56%),
-    radial-gradient(circle at center, rgba(255, 61, 0, .14) 0 55%, transparent 56%);
+    radial-gradient(circle at center, rgba(255, 61, 0, .18) 0%, rgba(255, 61, 0, .18) 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(255, 102, 0, .12) 0%, rgba(255, 102, 0, .12) 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(255, 61, 0, .15) 0%, rgba(255, 61, 0, .15) 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(255, 120, 64, .10) 0%, rgba(255, 120, 64, .10) 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(255, 61, 0, .14) 0%, rgba(255, 61, 0, .14) 55%, transparent 56%);
 }
 .fx-root.fx-sell::after {
   background-image:
-    radial-gradient(circle at center, rgba(220, 38, 38, .20) 0 55%, transparent 56%),
-    radial-gradient(circle at center, rgba(239, 68, 68, .14) 0 55%, transparent 56%),
-    radial-gradient(circle at center, rgba(185, 28, 28, .16) 0 55%, transparent 56%),
-    radial-gradient(circle at center, rgba(244, 63, 94, .12) 0 55%, transparent 56%),
-    radial-gradient(circle at center, rgba(220, 38, 38, .14) 0 55%, transparent 56%);
+    radial-gradient(circle at center, rgba(220, 38, 38, .20) 0%, rgba(220, 38, 38, .20) 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(239, 68, 68, .14) 0%, rgba(239, 68, 68, .14) 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(185, 28, 28, .16) 0%, rgba(185, 28, 28, .16) 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(244, 63, 94, .12) 0%, rgba(244, 63, 94, .12) 55%, transparent 56%),
+    radial-gradient(circle at center, rgba(220, 38, 38, .14) 0%, rgba(220, 38, 38, .14) 55%, transparent 56%);
 }
 
 @media (prefers-reduced-motion: reduce) {
