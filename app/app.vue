@@ -59,11 +59,11 @@
       >
         <template #header>
           <div class="flex items-center justify-center w-full gap-1 py-1 px-2 text-center">
+            <ClientOnly>
+              <span v-if="owned(char.id) > 0" class="mono text-[10px] px-1 py-0.5 border-2 border-white bg-black font-bold">x{{ owned(char.id) }}</span>
+            </ClientOnly>
             <h3 class="heading text-sm overprint truncate whitespace-nowrap max-w-[70%]" :data-text="char.name">{{ char.name }}</h3>
             <div class="flex items-center gap-1">
-              <ClientOnly>
-                <span v-if="owned(char.id) > 0" class="mono text-[10px] px-1 py-0.5 border-2 border-white bg-black font-bold">x{{ owned(char.id) }}</span>
-              </ClientOnly>
               <UIcon v-if="char.status && char.status.includes('DELISTED')" name="i-heroicons-no-symbol-20-solid" class="text-red-600 w-4 h-4" />
             </div>
           </div>
@@ -94,22 +94,22 @@
                 :title="!canBuy(char) ? buyReason(char) : undefined"
                 color="warning"
                 variant="solid"
-                size="sm"
-                class="btn-cta btn-buy data-[disabled=true]:btn-disabled w-full justify-center !bg-[#ea580c] !text-black !border-2 !border-white font-bold !py-1"
+                size="md"
+                class="btn-cta btn-buy btn-lg data-[disabled=true]:btn-disabled w-full justify-center !bg-[#ea580c] !text-white font-bold"
                 @click="buy(char)"
               >
-                <UIcon name="i-heroicons-arrow-up-right-16-solid" class="w-4 h-4 mr-1" /> ACHETER
+                <UIcon name="i-heroicons-arrow-up-right-16-solid" class="w-5 h-5 mr-1.5" /> ACHETER
               </UButton>
               <UButton
                 :disabled="!isHydrated || !canSell(char)"
                 :title="!canSell(char) ? 'Rien à vendre' : 'VENDRE'"
                 color="error"
                 variant="solid"
-                size="sm"
-                class="btn-cta btn-sell data-[disabled=true]:btn-disabled w-full justify-center !bg-[#dc2626] !text-white !border-2 !border-white font-bold !py-1"
+                size="md"
+                class="btn-cta btn-sell btn-lg data-[disabled=true]:btn-disabled w-full justify-center !bg-[#dc2626] !text-white font-bold"
                 @click="sell(char)"
               >
-                <UIcon name="i-heroicons-arrow-down-16-solid" class="w-4 h-4 mr-1" /> VENDRE
+                <UIcon name="i-heroicons-arrow-down-16-solid" class="w-5 h-5 mr-1.5" /> VENDRE
               </UButton>
             </div>
           </div>

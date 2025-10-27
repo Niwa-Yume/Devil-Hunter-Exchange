@@ -40,6 +40,12 @@
       <!-- Section DROITE (DATA) ~65% -->
       <section class="data-section">
         <div class="data-grid">
+          <!-- Ligne personnalisée: PRIX x10 items | VALEUR -->
+          <div class="data-block row-line span-2">
+            <span class="mono k-label">PRIX x10 items</span>
+            <span class="mono k-value">VALEUR: {{ yen(portfolioValue) }}</span>
+          </div>
+
           <!-- Portfolio -->
           <div class="data-block">
             <div class="label mono">PORTFOLIO VALUE</div>
@@ -70,7 +76,7 @@
           </div>
           <!-- Reset CTA -->
           <div class="data-block cta">
-            <UButton class="btn-cta btn-sell" icon="i-heroicons-arrow-path-20-solid" @click="onReset">RESET PORTFOLIO</UButton>
+            <UButton class="btn-cta btn-sell btn-lg" icon="i-heroicons-arrow-path-20-solid" aria-label="Reset portfolio" @click="onReset">RESET PORTFOLIO</UButton>
           </div>
         </div>
       </section>
@@ -214,4 +220,10 @@ function onReset() {
   .id-section { flex-basis: auto; }
   .data-section { flex-basis: auto; }
 }
+
+/* Ligne personnalisée sur 2 colonnes */
+.span-2 { grid-column: 1 / -1; }
+.row-line { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; }
+.k-label { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; opacity: .9; }
+.k-value { font-size: 15px; font-weight: 800; }
 </style>

@@ -192,87 +192,40 @@ body::after {
 }
 
 /* CTA buttons brutalistes */
-.btn-cta { border: 2px solid #fff; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; box-shadow: none !important; display: inline-flex; align-items: center; justify-content: center; }
+.btn-cta { border: 2px solid transparent; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; box-shadow: none !important; display: inline-flex; align-items: center; justify-content: center; transition: transform .06s ease, background-color .15s ease, color .15s ease, border-color .15s ease; }
 .btn-lg { padding: .55rem .9rem; min-height: 2.5rem; }
-
-/* Responsive */
-.btn-cta { white-space: nowrap; }
-@media (max-width: 640px) {
-  .cta-group .btn-cta { width: 100% !important; min-width: 0 !important; }
-}
+.btn-cta:active { transform: translateY(1px); }
+.btn-cta:focus-visible { outline: 2px dashed #fff; outline-offset: 2px; }
 
 /* Couleurs CHAINSaw Man pour ACHAT / VENDRE (override Nuxt UI) */
-.btn-cta.btn-buy { background: #ea580c !important; color: #000 !important; border-color: #fff !important; }
+.btn-cta.btn-buy { background: #ea580c !important; color: #fff !important; border-color: transparent !important; }
 .btn-cta.btn-buy:hover { background: #f97316 !important; }
 .btn-cta.btn-buy:active { background: #c2410c !important; }
 
-.btn-cta.btn-sell { background: #dc2626 !important; color: #fff !important; border-color: #fff !important; }
+.btn-cta.btn-sell { background: #dc2626 !important; color: #fff !important; border-color: transparent !important; }
 .btn-cta.btn-sell:hover { background: #ef4444 !important; }
 .btn-cta.btn-sell:active { background: #b91c1c !important; }
 
 /* Overrides forts pour couleurs si Nuxt UI applique data-attrs */
 .btn-cta.btn-buy[data-variant="solid"][data-color="primary"],
 .btn-cta.btn-buy[data-variant="solid"][data-color="orange"] {
-  background: #ea580c !important; color: #000 !important; border-color: #fff !important;
+  background: #ea580c !important; color: #fff !important; border-color: transparent !important;
 }
 .btn-cta.btn-sell[data-variant="solid"][data-color="primary"],
 .btn-cta.btn-sell[data-variant="solid"][data-color="red"] {
-  background: #dc2626 !important; color: #fff !important; border-color: #fff !important;
+  background: #dc2626 !important; color: #fff !important; border-color: transparent !important;
 }
 
 /* État disabled conservé */
 .btn-cta.btn-disabled, .btn-cta[data-disabled="true"] { background: #262626 !important; color: #fff !important; filter: grayscale(100%); cursor: not-allowed !important; opacity: 1 !important; }
 
-/* Teinte primaire Chainsaw Man pour les éléments qui utilisent text-primary */
-.text-primary { color: #ff3d00 !important; }
-
-/* Groupes d’actions responsives */
-.cta-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; align-items: stretch; }
-@media (max-width: 640px) { .cta-group { grid-template-columns: 1fr; } }
-
-/* Largeur identique robuste pour ACHAT/VENDRE (répartition 50/50) */
-.cta-group .btn-cta { flex: 1 1 0 !important; width: 100% !important; min-width: 0 !important; justify-content: center !important; align-items: center !important; }
-.cta-group .btn-cta .ui-icon, .cta-group .btn-cta svg { flex: 0 0 auto; }
-
-/* Hover card outline */
-.card-brutal:hover { outline: 2px solid #fff; outline-offset: -2px; }
-
-/* No wrap pour prix/cash */
-.no-wrap { white-space: nowrap; word-break: keep-all; }
-
-/* Overprint / surimpression texte */
-.overprint { position: relative; }
-.overprint::before {
-  content: attr(data-text);
-  position: absolute; left: 0; top: 0;
-  color: #ff3d00; /* orange industriel */
-  transform: translate(1px, 1px);
-  mix-blend-mode: multiply;
-  opacity: .6;
-  pointer-events: none;
-}
-
-/* Brush divider (coup de brosse) */
-.brush-divider {
-  height: 10px;
-  background:
-    linear-gradient(90deg, rgba(255,255,255,0.9) 40%, rgba(255,255,255,0.2) 60%) 0 0 / 50% 100% no-repeat,
-    radial-gradient(closest-side, rgba(255,255,255,0.9), transparent 70%) 20% 50% / 10% 120% no-repeat,
-    radial-gradient(closest-side, rgba(255,255,255,0.9), transparent 70%) 60% 50% / 8% 120% no-repeat;
-}
-
-/* Image style « poster » agressif */
-.posterish { filter: contrast(110%) saturate(115%); }
-.posterish:hover { filter: contrast(125%) saturate(130%) hue-rotate(6deg); }
-
 /* Forcer la couleur aussi sur les enfants internes du bouton (Nuxt UI) */
-.btn-cta.btn-buy, .btn-cta.btn-buy > *, .btn-cta.btn-buy [class*="bg-"] { background-color: #ea580c !important; color: #000 !important; }
+.btn-cta.btn-buy, .btn-cta.btn-buy > *, .btn-cta.btn-buy [class*="bg-"] { background-color: #ea580c !important; color: #fff !important; }
 .btn-cta.btn-sell, .btn-cta.btn-sell > *, .btn-cta.btn-sell [class*="bg-"] { background-color: #dc2626 !important; color: #fff !important; }
 
 /* UButton (Nuxt UI) — overrides par variables CSS pour garantir les couleurs */
-.btn-cta { --ui-border: #fff; --ui-ring: transparent; }
-.btn-cta.btn-buy { --ui-bg: #ea580c !important; --ui-hover-bg: #f97316 !important; --ui-active-bg: #c2410c !important; --ui-text: #000 !important; }
-.btn-cta.btn-sell { --ui-bg: #dc2626 !important; --ui-hover-bg: #ef4444 !important; --ui-active-bg: #b91c1c !important; --ui-text: #fff !important; }
+.btn-cta { --ui-border: transparent; --ui-ring: transparent; }
+.btn-cta.btn-sell { --ui-border: transparent !important; }
 
 /* Neutralise tout dégradé/overlay interne de Nuxt UI sur les boutons */
 .cta-group .btn-cta, .btn-cta, .btn-cta > *, .btn-cta [class*="bg-"] { background-image: none !important; }
