@@ -30,44 +30,16 @@
            </div>
          </div>
        </div>
-       <div class="flex flex-col items-end gap-3 flex-none">
-         <div class="flex items-center gap-3">
-           <UIcon name="i-heroicons-banknotes-20-solid" class="text-primary w-6 h-6" />
-           <ClientOnly>
-             <span class="mono text-2xl font-extrabold tracking-wide inline-block border border-white px-2 py-1 leading-none no-wrap">{{ yen(cash) }}</span>
-           </ClientOnly>
-           <!-- Ajout: icône portefeuille + valeur du portefeuille au même niveau que le cash -->
-           <ClientOnly>
-             <div class="flex items-center gap-2">
-               <UIcon name="i-heroicons-wallet-20-solid" class="w-5 h-5 text-white" />
-               <span class="mono text-2xl font-extrabold tracking-wide inline-block border border-white px-2 py-1 leading-none no-wrap">{{ yen(totalValue) }}</span>
-             </div>
-           </ClientOnly>
-           <!-- Toggle FX -->
-           <ClientOnly>
-             <UButton
-               :title="fxEnabled ? 'FX activés' : 'FX désactivés'"
-               color="primary"
-               variant="solid"
-               class="btn-block uppercase font-extrabold tracking-wide !text-black"
-               :class="fxEnabled ? '!bg-[#ea580c]' : '!bg-black !text-white'"
-               @click="fxEnabled = !fxEnabled"
-             >
-               FX
-             </UButton>
-           </ClientOnly>
-           <UButton color="primary" variant="solid" class="btn-block uppercase font-extrabold tracking-wide !text-black" @click="resetWallet">
-             RESET
-           </UButton>
-           <!-- Ouvre le portefeuille latéral -->
-           <UButton color="primary" variant="solid" class="btn-block uppercase font-extrabold tracking-wide !text-black" @click="showWallet = true">
-             <UIcon name="i-heroicons-wallet-20-solid" class="w-4 h-4 mr-1" /> PORTFEUILLE
-           </UButton>
-         </div>
-         <!-- Graphique de cash -->
-         <ClientOnly>
-          <CashChart :values="cashHistory" :width="360" :height="72" />
-         </ClientOnly>
+       <!-- Carte Portefeuille (style Devil Hunter ID) -->
+       <div class="mb-6">
+         <WalletCard
+             :username="userName"
+             :userImage="userImage"
+             :portfolioValue="totalValue"
+             :cashAmount="cash"
+             :performancePercentage="performancePct"
+             :performanceTrend="performanceTrend"
+         />
        </div>
      </div>
 
@@ -93,6 +65,8 @@
        </div>
      </div>
    </header>
+
+
 
    <h2 class="heading text-2xl mb-2">LE MARCHÉ</h2>
    <div class="h-2 accent-stripes mb-4"></div>
@@ -229,6 +203,7 @@ import { ref, watchEffect, computed, onMounted } from 'vue'
 // Force l’enregistrement côté template
 import CashChart from '../components/CashChart.vue'
 import Sparkline from '../components/Sparkline.vue'
+import WalletCard from '../components/WalletCard.vue'
 
 interface Character { id: string; name: string; price: number; image: string; status?: string }
 
@@ -254,6 +229,11 @@ const listAny = computed<any[]>(() => charactersList.value)
 // Portefeuille persistant (localStorage)
 const cash = useLocalStorage<number>('dhx-cash', 10000)
 const wallet = useLocalStorage<Record<string, number>>('dhx-wallet', {})
+
+// Profil utilisateur basique (pour WalletCard)
+const userName = useLocalStorage<string>('dhx-username', 'DENJI INVESTOR')
+const userImage = useLocalStorage<string>('dhx-user-image', '/images/denji.svg')
+
 
 // Historique du cash (persistant)
 const cashHistory = useLocalStorage<number[]>('dhx-cash-history', [10000])
@@ -386,8 +366,21 @@ const priceMap = computed<Record<string, number>>(() => {
 })
 const totalValue = computed(() => Object.entries(wallet.value).reduce((s, [id, qty]) => s + (priceMap.value[id] || 0) * (Number(qty) || 0), 0))
 
+// Performance globale (cash + portefeuille) vs baseline 10000
+const netWorth = computed(() => (Number(cash.value) || 0) + (Number(totalValue.value) || 0))
+const performancePct = computed(() => {
+  const base = 10000
+  const pct = base > 0 ? ((netWorth.value - base) / base) * 100 : 0
+  return Number(pct.toFixed(1))
+})
+const performanceTrend = computed<'up' | 'down' | 'neutral'>(() => {
+  if (performancePct.value > 0.05) return 'up'
+  if (performancePct.value < -0.05) return 'down'
+  return 'neutral'
+})
+
 // Vente
-function canSell(char: Character) { return (wallet.value[char.id] || 0) > 0 }
+function canSell(char: Character) { return (wallet.value[char["id"]] || 0) > 0 }
 function sell(char: Character) {
   if (!canSell(char)) return
   wallet.value[char.id] = Math.max(0, (wallet.value[char.id] || 0) - 1)
