@@ -1,102 +1,84 @@
 <template>
-  <div class="relative wallet-card overflow-hidden select-none text-black">
-    <!-- Fond discret: léger grain + fines stries -->
-    <div class="pointer-events-none absolute inset-0 opacity-[0.015]" style="background:
-      repeating-linear-gradient(0deg, rgba(0,0,0,.08), rgba(0,0,0,.08) 2px, transparent 2px, transparent 6px),
-      radial-gradient( at 20% 10%, rgba(0,0,0,.12) 0 20%, transparent 21% ),
-      radial-gradient( at 70% 70%, rgba(0,0,0,.08) 0 14%, transparent 15% );"></div>
-
-    <!-- Bandeau supérieur -->
-    <div class="relative z-10 px-4 sm:px-5 md:px-6 py-2 bg-[#f1f0f6] border-b border-black/40 flex items-center justify-between">
+  <div class="relative wallet-card overflow-hidden select-none">
+    <!-- Bandeau supérieur sombre -->
+    <div class="header-band">
       <div>
-        <div class="heading text-base sm:text-lg tracking-wide upper-kern">DEVIL HUNTER EXCHANGE</div>
-        <div class="mono text-[11px] sm:text-xs text-black/80">PUBLIC SAFETY DIVISION 4</div>
+        <div class="heading upper-kern title">DHX - DEVIL HUNTER EXCHANGE</div>
+        <div class="mono subtitle">PUBLIC SAFETY DIVISION 4</div>
       </div>
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full border-2 border-[#ea580c] grid place-items-center">
-          <UIcon name="i-heroicons-shield-check-20-solid" class="w-4 h-4 text-[#ea580c]" />
+      <div class="header-right">
+        <div class="crest">
+          <UIcon name="i-heroicons-shield-check-20-solid" class="icon" />
         </div>
-        <div class="leading-tight text-right">
-          <div class="mono text-[10px] tracking-wide text-black/70">政府公安局</div>
-           <div class="mono text-[10px] uppercase tracking-wide text-black/70">PUBLIC SAFETY</div>
-           <div class="mono text-[11px] uppercase tracking-wide text-black">DEVIL HUNTERS</div>
+        <div class="mono gov">
+          <div>政府公安局</div>
+          <div class="caps">PUBLIC SAFETY</div>
+          <div class="caps strong">DEVIL HUNTERS</div>
         </div>
       </div>
     </div>
 
-    <!-- Contenu principal -->
-    <div class="relative z-10 p-4 sm:p-5 md:p-6 text-black">
-      <!-- Grille principale -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
-        <!-- Col Profil -->
-        <div class="relative flex items-start gap-4">
-          <!-- Sceau circulaire discret sous la photo -->
-          <div class="absolute -top-2 -left-2 w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-[#ea580c] opacity-15"></div>
-          <div class="relative z-10 w-24 h-24 sm:w-28 sm:h-28 bg-white border-2 border-black overflow-hidden flex items-center justify-center shadow-[inset_0_0_0_4px_#f6f6f8]">
-            <!-- Image utilisateur ou icône par défaut -->
-            <!-- TODO: remplacer par un composant UAvatar si disponible -->
-          </div>
-
-        </div>
-
-        <!-- Col Valeurs (tableau lisible) -->
-        <div class="grid grid-cols-1 gap-3">
-          <div class="grid grid-cols-[140px_1fr] items-baseline gap-3">
-            <div class="mono text-[11px] tracking-wide text-black/60 font-bold uppercase">PORTFOLIO VALUE</div>
-            <ClientOnly fallback="...">
-              <div class="mono text-3xl font-black leading-none" :class="portfolioColorClass">{{ yen(portfolioValue) }}</div>
-            </ClientOnly>
-          </div>
-          <div class="grid grid-cols-[140px_1fr] items-baseline gap-3">
-            <div class="mono text-[11px] tracking-wide text-black/60 font-bold uppercase">CASH AVAILABLE</div>
-            <ClientOnly fallback="...">
-              <div class="mono text-3xl font-black leading-none text-black">{{ yen(cashAmount) }}</div>
-            </ClientOnly>
-          </div>
-          <div class="divider"></div>
-          <div class="grid grid-cols-[140px_1fr] items-baseline gap-3">
-            <div class="mono text-[11px] tracking-wide text-black/60 font-bold uppercase">CARD CODE</div>
-            <div class="mono text-base font-bold text-black">{{ sidebarCode }}</div>
+    <!-- Corps: layout horizontal 30/70 -->
+    <div class="card-body">
+      <!-- Section GAUCHE (ID) ~35% -->
+      <section class="id-section">
+        <div class="avatar-wrap">
+          <div class="avatar-ring"></div>
+          <div class="avatar-frame">
+            <img v-if="userImage" :src="userImage" :alt="username" class="avatar-img" />
+            <div v-else class="avatar-fallback">
+              <UIcon name="i-heroicons-user-20-solid" class="w-8 h-8" />
+            </div>
           </div>
         </div>
+        <div class="id-infos">
+          <div class="heading name" :title="displayedUsername">{{ displayedUsername }}</div>
+          <div class="mono chip">{{ sidebarCode }}</div>
+        </div>
+      </section>
 
-        <!-- Col Performance (net, lisible) -->
-        <div class="flex items-center lg:items-start justify-between lg:justify-end gap-4">
-          <div class="text-right">
-            <div class="mono text-[11px] tracking-wide text-black/60 font-bold uppercase">PERFORMANCE</div>
-            <ClientOnly fallback="...">
-              <div class="flex items-center justify-end gap-2">
-                <UIcon :name="trendIcon" :class="['w-6 h-6', trendColorClass]" />
-                <div class="mono text-3xl font-black" :class="trendColorClass">{{ signedPercent }}</div>
-              </div>
-            </ClientOnly>
-            <div class="mono text-[11px] text-black/50">Performance / All Time</div>
+      <!-- Section DROITE (DATA) ~65% -->
+      <section class="data-section">
+        <div class="data-grid">
+          <!-- Portfolio -->
+          <div class="data-block">
+            <div class="label mono">PORTFOLIO VALUE</div>
+            <div class="value mono" :class="portfolioColorClass">{{ yen(portfolioValue) }}</div>
+          </div>
+          <!-- Cash -->
+          <div class="data-block">
+            <div class="label mono">CASH AVAILABLE</div>
+            <div class="value mono">{{ yen(cashAmount) }}</div>
+          </div>
+          <!-- Performance -->
+          <div class="data-block">
+            <div class="label mono">PERFORMANCE</div>
+            <div class="value mono perf" :class="trendColorClass">
+              <UIcon :name="trendIcon" class="perf-icon" />
+              <span>{{ signedPercent }}</span>
+            </div>
+          </div>
+          <!-- Public Safety chip -->
+          <div class="data-block">
+            <div class="label mono">AUTHORITY</div>
+            <div class="value mono faint">政府公安局 • PUBLIC SAFETY</div>
+          </div>
+          <!-- Issued/Sign -->
+          <div class="data-block">
+            <div class="label mono">ISSUED</div>
+            <div class="value mono faint">{{ issuedDate }} • SIGN: ______</div>
+          </div>
+          <!-- Reset CTA -->
+          <div class="data-block cta">
+            <UButton class="btn-cta btn-sell" icon="i-heroicons-arrow-path-20-solid" @click="onReset">RESET PORTFOLIO</UButton>
           </div>
         </div>
-      </div>
-
-      <div class="divider my-4"></div>
-
-      <!-- Bas de carte: infos et bouton reset -->
-      <div class="flex items-end justify-between gap-3 flex-wrap">
-        <div class="mono text-[11px] text-black/60 font-bold">政府公安局 • PUBLIC SAFETY</div>
-        <div class="mono text-[11px] text-black/60 text-right hidden sm:block">
-          <div>ISSUED: {{ issuedDate }}</div>
-          <div class="mt-1">SIGNATURE: <span class="inline-block align-bottom border-b border-black/40 min-w-[120px]"></span></div>
-        </div>
-        <button
-          class="btn-reset"
-          @click="onReset"
-        >
-          <UIcon name="i-heroicons-arrow-path-20-solid" class="w-4 h-4 mr-1" />
-          RESET PORTFOLIO
-        </button>
-      </div>
+      </section>
     </div>
 
     <!-- Barre latérale codée -->
-    <div class="absolute right-0 top-0 h-full w-10 border-l border-black flex items-center justify-center bg-[repeating-linear-gradient(90deg,_transparent,_transparent_6px,_rgba(0,0,0,0.08)_6px,_rgba(0,0,0,0.08)_12px)]">
-      <div class="mono text-[10px] -rotate-90 tracking-[.3em] text-black/80">{{ sidebarCode }}</div>
+    <div class="side-code">
+      <div class="mono code">{{ sidebarCode }}</div>
     </div>
   </div>
 </template>
@@ -113,16 +95,12 @@ const props = defineProps<{
   performanceTrend: 'up' | 'down' | 'neutral'
 }>()
 
+const displayedUsername = computed(() => (props.username || '').replace(/\s+/g, ' ').trim())
+
 function formatYen(v: number) {
-  try {
-    return new Intl.NumberFormat('ja-JP', { maximumFractionDigits: 0 }).format(v)
-  } catch {
-    return String(v)
-  }
+  try { return new Intl.NumberFormat('ja-JP', { maximumFractionDigits: 0 }).format(v) } catch { return String(v) }
 }
-function yen(v: number) {
-  return `${formatYen(v)}\u202F¥`
-}
+function yen(v: number) { return `${formatYen(v)}\u202F¥` }
 
 const trendIcon = computed(() => {
   if (props.performanceTrend === 'up') return 'i-heroicons-arrow-up-20-solid'
@@ -130,19 +108,19 @@ const trendIcon = computed(() => {
   return 'i-heroicons-minus-20-solid'
 })
 const trendColorClass = computed(() => {
-  if (props.performanceTrend === 'up') return '!text-[#ea580c]'
-  if (props.performanceTrend === 'down') return 'text-red-600'
-  return 'text-slate-500'
+  if (props.performanceTrend === 'up') return 'text-orange'
+  if (props.performanceTrend === 'down') return 'text-red'
+  return 'text-muted'
 })
 const portfolioColorClass = computed(() => {
-  if (props.performanceTrend === 'down') return 'text-red-600'
-  if (props.performanceTrend === 'up') return '!text-[#ea580c]'
-  return 'text-slate-900'
+  if (props.performanceTrend === 'down') return 'text-red'
+  if (props.performanceTrend === 'up') return 'text-orange'
+  return 'text-plain'
 })
 
 const signedPercent = computed(() => {
   const v = Number(props.performancePercentage) || 0
-  const sign = v > 0 ? '+' : v < 0 ? '' : ''
+  const sign = v > 0 ? '+' : ''
   return `${sign}${v.toFixed(1)}%`
 })
 
@@ -153,68 +131,87 @@ const sidebarCode = computed(() => {
 })
 
 const issuedDate = computed(() => {
-  try {
-    return new Date().toISOString().slice(0, 10)
-  } catch { return '' }
+  try { return new Date().toISOString().slice(0, 10) } catch { return '' }
 })
 
-const emit = defineEmits<{
-  reset: []
-}>()
-
+const emit = defineEmits<{ reset: [] }>()
 function onReset() {
-  if (confirm('⚠️ ATTENTION: Voulez-vous vraiment réinitialiser votre portefeuille ? Toutes vos données seront perdues !')) {
-    emit('reset')
-  }
+  alert('Portefeuille réinitialisé (pas encore fonctionnel)!')
+  if (confirm('⚠️ ATTENTION: Voulez-vous vraiment réinitialiser votre portefeuille ? Toutes vos données seront perdues !')) emit('reset')
 }
 </script>
 
 <style scoped>
+/* Règle N°2: Dark mode industriel + ring brutaliste */
 .wallet-card {
+  position: relative;
   width: 100%;
-  max-width: 760px;
-  /* Couleur de carte plus claire pour le contraste */
-  background: linear-gradient(180deg, #faf9fe, #f0eef8);
-  border: 2px solid rgba(0,0,0,.7);
-  box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 10px 22px rgba(0,0,0,.28);
-  color: #0f0f0f;
-}
-.divider { border-top: 1px solid rgba(0,0,0,.35); }
-/* Utilise les classes globales "heading" et "mono" déjà présentes dans le projet */
-.heading { font-family: 'Special Elite', system-ui, -apple-system, sans-serif; letter-spacing: .02em; }
-.mono { font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-.upper-kern { letter-spacing: .08em; text-transform: uppercase; }
-.overprint { text-shadow: 1px 0 currentColor; }
-.stamp { font-family: 'Special Elite', system-ui, -apple-system, sans-serif; letter-spacing: .08em; }
-
-/* Bouton RESET rouge vif */
-.btn-reset {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  padding: 0.5rem 1rem;
-  background-color: #dc2626 !important;
-  color: white !important;
-  border: 2px solid #000 !important;
-  font-family: 'Special Elite', system-ui, -apple-system, sans-serif;
-  font-weight: 700;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: none !important;
+  background: #0f1115; /* proche neutral-900 */
+  color: #e5e7eb; /* gris clair */
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px #374151; /* ring-1 ring-gray-700 */
 }
 
-.btn-reset:hover {
-  background-color: #b91c1c !important;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+/* Bandeau */
+.header-band {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 16px 8px calc(16px + 0.5rem);
+  background: #111318; /* un poil plus sombre */
+  border-bottom: 1px solid #374151;
 }
+.header-band .title { font-size: 13px; letter-spacing: .08em; }
+.header-band .subtitle { font-size: 11px; opacity: .8; }
+.header-right { display: flex; align-items: center; gap: 8px; }
+.crest { width: 32px; height: 32px; border: 2px solid #ea580c; border-radius: 9999px; display: flex; align-items: center; justify-content: center; background: #0b0d11; }
+.crest .icon { width: 16px; height: 16px; color: #ea580c; }
+.gov { font-size: 10px; line-height: 1.1; text-align: right; }
+.gov .caps { text-transform: uppercase; letter-spacing: .08em; opacity: .8; }
+.gov .strong { opacity: 1; }
 
-.btn-reset:active {
-  transform: translateY(0);
-  box-shadow: none !important;
+/* Règle N°1: Layout horizontal 30/70 */
+.card-body { display: flex; gap: 20px; padding: 16px; }
+.id-section { flex: 0 0 36%; min-width: 260px; display: flex; gap: 12px; align-items: center; }
+.data-section { flex: 1 1 64%; min-width: 320px; }
+
+/* ID visuel */
+.avatar-wrap { position: relative; }
+.avatar-ring { position: absolute; inset: -6px auto auto -6px; width: 84px; height: 84px; border-radius: 9999px; border: 2px solid #ea580c; opacity: .18; }
+.avatar-frame { width: 96px; height: 96px; background: #0b0d11; border: 2px solid #111827; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.avatar-img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #9ca3af; }
+.name { font-size: 16px; max-width: 16ch; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chip { margin-top: 4px; font-size: 11px; letter-spacing: .12em; opacity: .85; }
+
+/* Règle N°3: DATA en 2 colonnes */
+.data-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; row-gap: 12px; }
+.data-block { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.data-block.cta { justify-content: flex-end; align-items: center; }
+.label { font-size: 11px; letter-spacing: .08em; opacity: .7; text-transform: uppercase; white-space: nowrap; }
+.value { font-size: 26px; font-weight: 800; white-space: nowrap; }
+.value.perf { display: inline-flex; align-items: center; gap: 8px; }
+.perf-icon { width: 20px; height: 20px; }
+
+/* Couleurs tendance */
+.text-orange { color: #ea580c; }
+.text-red { color: #ef4444; }
+.text-muted { color: #9ca3af; }
+.text-plain { color: #e5e7eb; }
+.faint { color: #9ca3af; }
+
+/* Barre latérale code */
+.side-code { position: absolute; right: 0; top: 0; height: 100%; width: 36px; border-left: 1px solid #374151; background:
+  repeating-linear-gradient(90deg, transparent 0 6px, rgba(255,255,255,0.06) 6px 12px);
+  display: flex; align-items: center; justify-content: center; }
+.side-code .code { transform: rotate(-90deg); letter-spacing: .3em; font-size: 10px; color: #e5e7eb; opacity: .8; }
+
+/* Responsiveness: garder l’horizontal, mais permettre le wrap de la data en 2 colonnes */
+@media (max-width: 900px) {
+  .id-section { flex-basis: 40%; }
+  .data-section { flex-basis: 60%; }
+}
+@media (max-width: 680px) {
+  .card-body { flex-direction: column; }
+  .id-section { flex-basis: auto; }
+  .data-section { flex-basis: auto; }
 }
 </style>
