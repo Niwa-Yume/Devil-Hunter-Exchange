@@ -1,33 +1,182 @@
 [
   {
     "id": "denji",
-    "name": "DENJI",
+    "name": "Denji",
     "price": 1000,
-    "image": "/images/denji.svg"
+    "image": "https://upload.wikimedia.org/wikipedia/en/2/2e/Denjichainsawman.png",
+    "status": "Vivant",
+    "affiliation": "Public Safety Devil Hunters (ancien), Civil",
+    "note": "Hôte de Pochita (Chainsaw Man)"
+  },
+  {
+    "id": "pochita",
+    "name": "Pochita",
+    "price": 9999,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/5/54/Pochita_anime_design.png",
+    "status": "Vivant",
+    "affiliation": "N/A",
+    "note": "Le Démon Tronçonneuse (cœur de Denji)"
   },
   {
     "id": "asa",
-    "name": "ASA MITAKA",
+    "name": "Asa Mitaka",
     "price": 1000,
-    "image": "/images/asa.svg"
+    "image": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2c94c1fb-72e2-4933-bb73-55b09c58bd6d/djhkd3g-a760105d-d97d-4203-9f87-335bcb5e8637.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi8yYzk0YzFmYi03MmUyLTQ5MzMtYmI3My01NWIwOWM1OGJkNmQvZGpoa2QzZy1hNzYwMTA1ZC1kOTdkLTQyMDMtOWY4Ny0zMzViY2I1ZTg2MzcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.t3HElL_obxaPUSIa06Cz4XnhO9wpIP71-xANEIud5So",
+    "status": "Vivante",
+    "affiliation": "Lycée (ancienne), Civile",
+    "note": "Hôte de Yoru (Démon de la Guerre)"
+  },
+  {
+    "id": "yoru",
+    "name": "Yoru",
+    "price": 1000,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/9/90/Volume_12_%28Textless%29.png",
+    "status": "Vivante",
+    "affiliation": "Quatre Cavaliers de l'Apocalypse",
+    "note": "Démon de la Guerre (partage le corps d'Asa)"
   },
   {
     "id": "nayuta",
-    "name": "NAYUTA",
+    "name": "Nayuta",
     "price": 800,
-    "image": "/images/nayuta.svg"
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/7/7f/Nayuta.png",
+    "status": "Vivante",
+    "affiliation": "N/A",
+    "note": "Démon du Contrôle (Réincarnation)"
   },
   {
     "id": "power",
-    "name": "POWER",
+    "name": "Power",
     "price": 0,
-    "image": "/images/power.svg",
-    "status": "💀 DELISTED"
+    "image": "https://upload.wikimedia.org/wikipedia/en/c/c2/Power_%28Chainsaw_Man%29.png",
+    "status": "Décédée",
+    "affiliation": "Public Safety Devil Hunters (ancienne)",
+    "note": "Démon de Sang (Blood Fiend)"
+  },
+  {
+    "id": "aki",
+    "name": "Aki Hayakawa",
+    "price": 0,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/c/cb/Aki_Reze_Arc_anime_design.png",
+    "status": "Décédé",
+    "affiliation": "Public Safety Devil Hunters",
+    "note": "Hôte du Démon-Flingue (brièvement)"
+  },
+  {
+    "id": "makima",
+    "name": "Makima",
+    "price": 0,
+    "image": "https://upload.wikimedia.org/wikipedia/en/a/aa/Makima.png",
+    "status": "Décédée",
+    "affiliation": "Public Safety Devil Hunters",
+    "note": "Démon du Contrôle (incarnation précédente)"
+  },
+  {
+    "id": "kishibe",
+    "name": "Kishibe",
+    "price": 750,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/3/32/Kishibe_anime_design.png",
+    "status": "Vivant",
+    "affiliation": "Public Safety Devil Hunters (Tokyo)",
+    "note": "Capitaine de la 1ère division spéciale"
+  },
+  {
+    "id": "yoshida",
+    "name": "Hirofumi Yoshida",
+    "price": 700,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/4/4c/Volume_17_%28Textless%29.png",
+    "status": "Vivant",
+    "affiliation": "Public Safety Devil Hunters (Tokyo)",
+    "note": "Contractant du Démon-Poulpe"
+  },
+  {
+    "id": "himeno",
+    "name": "Himeno",
+    "price": 0,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3l9xgOEtr52mh4WS8GoVHP2cqy-9N0y0GVQ&s",
+    "status": "Décédée",
+    "affiliation": "Public Safety Devil Hunters",
+    "note": "Contractante du Démon-Fantôme"
+  },
+  {
+    "id": "kobeni",
+    "name": "Kobeni Higashiyama",
+    "price": 500,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/a/ab/Kobeniscarownercolored.png",
+    "status": "Inconnu",
+    "affiliation": "Public Safety Devil Hunters (ancienne)",
+    "note": "Contrat démoniaque inconnu"
   },
   {
     "id": "barem",
-    "name": "BAREM",
+    "name": "Barem",
     "price": 450,
-    "image": "/images/barem.svg"
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/e/eb/Barem_Part_2_Profile.png",
+    "status": "Vivant",
+    "affiliation": "Église Chainsaw Man",
+    "note": "Hybride Lance-flammes"
+  },
+  {
+    "id": "fami",
+    "name": "Fami",
+    "price": 900,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/e/e4/Volume_14_%28Textless%29.png",
+    "status": "Vivante",
+    "affiliation": "Quatre Cavaliers de l'Apocalypse",
+    "note": "Démon de la Famine"
+  },
+  {
+    "id": "reze",
+    "name": "Reze",
+    "price": 300,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/1/19/Reze_Infobox.png",
+    "status": "Inconnu",
+    "affiliation": "Union Soviétique",
+    "note": "Hybride Bombe"
+  },
+  {
+    "id": "quanxi",
+    "name": "Quanxi",
+    "price": 300,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/b/b9/Quanxi_%28Public_Safety_Hunter_Uniform%29.png",
+    "status": "Inconnu",
+    "affiliation": "Chine",
+    "note": "Hybride Arbalète"
+  },
+  {
+    "id": "katana-man",
+    "name": "Katana Man (Samurai Sword)",
+    "price": 300,
+    "image": "https://static.wikia.nocookie.net/villains/images/5/5b/Katana_Man_Anime.png",
+    "status": "Vivant",
+    "affiliation": "Yakuza / Église Chainsaw Man",
+    "note": "Hybride Katana"
+  },
+  {
+    "id": "angel",
+    "name": "Angel Devil",
+    "price": 0,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/5/51/Angel_Devil.png",
+    "status": "Décédé",
+    "affiliation": "Public Safety Devil Hunters",
+    "note": "Démon-Ange"
+  },
+  {
+    "id": "beam",
+    "name": "Beam",
+    "price": 0,
+    "image": "https://static.wikia.nocookie.net/chainsaw-man/images/f/fc/Beam_Reze_Arc_anime_design.png",
+    "status": "Décédé",
+    "affiliation": "Public Safety Devil Hunters",
+    "note": "Démon-Requin (Shark Fiend)"
+  },
+  {
+    "id": "gun-devil",
+    "name": "Gun Devil",
+    "price": 0,
+    "image": "https://static.wikia.nocookie.net/villains/images/e/eb/Gun_devil.png",
+    "status": "N/A (Démon)",
+    "affiliation": "N/A",
+    "note": "Incarnation de la peur des armes à feu"
   }
 ]

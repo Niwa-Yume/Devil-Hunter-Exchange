@@ -152,7 +152,7 @@
              <UButton
                :disabled="!isHydrated || !canBuy(char)"
                :title="!canBuy(char) ? buyReason(char) : undefined"
-               color="orange"
+               color="warning"
                variant="solid"
                class="btn-cta btn-lg btn-buy data-[disabled=true]:btn-disabled w-full justify-center items-center !bg-[#ea580c] !text-black !border-white"
                @click="buy(char)"
@@ -162,7 +162,7 @@
              <UButton
                :disabled="!isHydrated || !canSell(char)"
                :title="!canSell(char) ? 'Rien à vendre' : 'VENDRE'"
-               color="red"
+               color="error"
                variant="solid"
                class="btn-cta btn-lg btn-sell data-[disabled=true]:btn-disabled w-full justify-center items-center !bg-[#dc2626] !text-white !border-white"
                @click="sell(char)"
@@ -353,9 +353,20 @@ function yen(v: number) {
 const onlyAvailable = useLocalStorage<boolean>('dhx-only-available', false)
 const sortAsc = useLocalStorage<boolean>('dhx-sort-asc', false)
 
+// Helper: statut vivant/vivante (robuste aux accents)
+function isAliveStatus(status: any): boolean {
+  const s = String(status ?? '')
+  if (!s) return false
+  const norm = s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
+  // couvre "Vivant" et "Vivante"
+  return norm.startsWith('vivant')
+}
+
 const filteredList = computed<any[]>(() => {
   let list = listAny.value
-  if (onlyAvailable.value) list = list.filter(item => !(item?.status && /DELISTED/i.test(item.status)))
+  if (onlyAvailable.value) {
+    list = list.filter(item => isAliveStatus(item?.status))
+  }
   const arr = list.slice().sort((a: any, b: any) => {
     const ap = Number(a?.price ?? 0)
     const bp = Number(b?.price ?? 0)
